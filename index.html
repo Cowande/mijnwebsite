@@ -2,49 +2,51 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8"/>
-<title>Pixel Multiplayer - Verbeterd</title>
+<title>Pixel Multiplayer - Admin & Clans (Improved)</title>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <style>
   :root{
-    --panel: rgba(20,20,20,0.95);
+    --panel: rgba(10,10,10,0.95);
     --muted: #bdbdbd;
     --accent: #ffd54f;
     --danger: #ff5252;
+    --success: #69f0ae;
   }
   html,body{height:100%;margin:0;background:#0b0b0b;color:#fff;font-family:Inter,Arial,system-ui;}
-  canvas{display:block;background:#1b262b;cursor:crosshair;}
+  canvas{display:block;background:#1b262b;}
   /* Topbar */
-  #topbar{position:fixed;left:0;top:0;right:0;height:48px;display:flex;align-items:center;padding:6px 12px;background:rgba(0,0,0,0.8);z-index:2000;gap:14px;backdrop-filter: blur(5px);border-bottom:1px solid rgba(255,255,255,0.1);}
+  #topbar{position:fixed;left:0;top:0;right:0;height:48px;display:flex;align-items:center;padding:6px 12px;background:rgba(0,0,0,0.7);z-index:2000;gap:14px;backdrop-filter: blur(5px);}
   #topbar .muted{color:var(--muted);font-size:13px}
   /* modal */
-  .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);min-width:320px;max-width:90vw;max-height:90vh;overflow:auto;background:var(--panel);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);z-index:3000;display:none;box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
-  .modal h2{margin:0 0 15px 0;color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:8px;}
-  .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
-  .slot{width:70px;height:70px;border-radius:8px;background:#151515;border:2px solid rgba(255,255,255,0.1);display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;cursor:pointer;background-size:cover;background-position:center;transition: all 0.2s ease;position:relative;}
-  .slot:hover{transform: translateY(-3px); border-color: var(--accent);}
-  .slot.selected{outline:3px solid var(--accent); transform: scale(1.08); box-shadow: 0 5px 15px rgba(255,213,79,0.3);}
-  button,input[type=text],input[type=number],select{background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);color:white;padding:10px 14px;border-radius:8px;transition: all 0.2s ease;font-size:14px;}
-  button:hover{background:#252525;border-color: var(--accent);}
+  .modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);min-width:320px;max-width:90vw;max-height:90vh;overflow:auto;background:var(--panel);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);z-index:3000;display:none;box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+  .modal h2{margin:0 0 12px 0;color:var(--accent);}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .slot{width:72px;height:72px;border-radius:8px;background:#0c0c0c;border:2px solid rgba(255,255,255,0.08);display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;cursor:pointer;background-size:cover;background-position:center;transition: all 0.2s ease;}
+  .slot:hover{transform: translateY(-2px); border-color: rgba(255,255,255,0.2);}
+  .slot.selected{outline:3px solid var(--accent); transform: scale(1.05);}
+  button,input[type=text],input[type=number],select{background:#0d0d0d;border:1px solid rgba(255,255,255,0.08);color:white;padding:8px 12px;border-radius:6px;transition: all 0.2s ease;}
+  button:hover{background:#151515;border-color: rgba(255,255,255,0.15);}
   button:active{transform: scale(0.98);}
-  .small{font-size:13px;color:var(--muted);}
+  .small{font-size:13px}
   /* admin */
-  #adminPanel{position:fixed;right:15px;top:60px;background:var(--panel);padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);z-index:3000;display:none;min-width:260px;box-shadow: 0 5px 20px rgba(0,0,0,0.4);}
-  #clanPanel{position:fixed;left:15px;top:60px;background:var(--panel);padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);z-index:3000;display:none;min-width:280px;max-height:70vh;overflow:auto;box-shadow: 0 5px 20px rgba(0,0,0,0.4);}
-  .clan-item{padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);margin-bottom:10px;background:#151515;transition: all 0.2s ease;}
-  .clan-item:hover{background:#1a1a1a; border-color: rgba(255,255,255,0.15);}
-  .tooltip{position:fixed;pointer-events:none;padding:8px 12px;background:#000c;border:1px solid rgba(255,255,255,0.1);border-radius:8px;display:none;z-index:4000;backdrop-filter: blur(5px);font-size:13px;}
+  #adminPanel{position:fixed;right:12px;top:64px;background:var(--panel);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);z-index:3000;display:none;min-width:240px;box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+  #clanPanel{position:fixed;left:12px;top:64px;background:var(--panel);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);z-index:3000;display:none;min-width:280px;max-height:60vh;overflow:auto;box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+  #playerSettings{position:fixed;left:12px;bottom:12px;background:var(--panel);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);z-index:3000;display:none;min-width:240px;box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+  .clan-item{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);margin-bottom:10px;background:#0b0b0b;transition: all 0.2s ease;}
+  .clan-item:hover{background:#111; border-color: rgba(255,255,255,0.1);}
+  .tooltip{position:fixed;pointer-events:none;padding:8px 12px;background:#000c;border:1px solid rgba(255,255,255,0.08);border-radius:8px;display:none;z-index:4000;backdrop-filter: blur(5px);}
   
-  /* New styles */
-  .section-title{font-weight:600;margin:15px 0 8px 0;font-size:14px;color:var(--accent);}
-  .danger-zone{border-top:1px solid rgba(255,100,100,0.2);padding-top:12px;margin-top:12px;}
-  .danger-btn{background:var(--danger);color:white;border-color:var(--danger);}
-  .success-btn{background:#4CAF50;color:white;border-color:#4CAF50;}
-  .flex-between{display:flex;justify-content:space-between;align-items:center;gap:10px;}
-  .notification{position:fixed;top:20px;right:20px;padding:12px 16px;background:var(--panel);border-radius:8px;border-left:4px solid var(--accent);z-index:5000;display:none;box-shadow: 0 5px 15px rgba(0,0,0,0.3);font-size:14px;}
-  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px;}
-  .stat-item{background:rgba(255,255,255,0.05);padding:8px 12px;border-radius:6px;font-size:12px;}
-  .block-indicator{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--panel);padding:8px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);font-size:13px;display:none;z-index:1000;}
-  .admin-badge{background:var(--accent);color:#000;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:bold;margin-left:8px;}
+  /* New styles for improved UI */
+  .section-title{font-weight:600;margin:12px 0 6px 0;font-size:14px;color:var(--accent);}
+  .danger-zone{border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;margin-top:12px;}
+  .danger-btn{background:var(--danger);color:white;}
+  .success-btn{background:var(--success);color:#000;}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;}
+  .notification{position:fixed;top:20px;right:20px;padding:12px 16px;background:var(--panel);border-radius:8px;border-left:4px solid var(--accent);z-index:5000;display:none;box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+  .stat-item{background:rgba(255,255,255,0.05);padding:6px 10px;border-radius:6px;font-size:12px;}
+  .player-settings-row{display:flex;gap:6px;margin-bottom:8px;align-items:center;}
+  .player-settings-row label{min-width:60px;}
 </style>
 </head>
 <body>
@@ -57,12 +59,7 @@
   <div style="flex:1"></div>
   <div id="coords" class="muted">X:0 Y:0</div>
   <div id="online" class="muted">Online: 0</div>
-  <div id="selectedInfo" class="muted" style="display:none;">Geselecteerd: -</div>
-</div>
-
-<!-- Block Indicator -->
-<div class="block-indicator" id="blockIndicator">
-  <span id="currentBlock">Geen blok geselecteerd</span>
+  <button id="settingsToggle" style="padding:4px 8px;font-size:12px;">Instellingen</button>
 </div>
 
 <!-- Notification System -->
@@ -70,93 +67,113 @@
 
 <!-- Inventory Modal -->
 <div class="modal" id="inventoryModal">
-  <h2>📦 Inventory</h2>
+  <h2>Inventory</h2>
   <div class="row" id="inventorySlots"></div>
   <div class="stats-grid">
     <div class="stat-item">Geselecteerd: <span id="selectedBlockName">-</span></div>
-    <div class="stat-item">Blokken: <span id="blocksPlaced">0</span></div>
+    <div class="stat-item">Blokken geplaatst: <span id="blocksPlaced">0</span></div>
   </div>
-  <div style="margin-top:15px" class="small">
-    <div>🔼 E = Open/Sluit inventory</div>
-    <div>🖱️ Klik = Plaats blok</div>
-    <div>🖱️ Rechtsklik = Verwijder blok</div>
-    <div>🔧 Shift+Klik = Verwijder zonder selectie</div>
-  </div>
-  <div style="text-align:right;margin-top:15px"><button id="invClose">Sluiten</button></div>
+  <div style="margin-top:12px" class="small muted">E to open/close. Klik om te selecteren (klik opnieuw om te deselect). Shift+klik/Right-click op wereld om te verwijderen.</div>
+  <div style="text-align:right;margin-top:14px"><button id="invClose">Sluiten</button></div>
 </div>
 
 <!-- Clan & First-time Modal -->
 <div class="modal" id="firstModal">
-  <h2>🎮 Welkom bij Pixel Multiplayer</h2>
-  <div class="small">Kies je bijnaam en clan om te beginnen</div>
+  <h2>Welkom — Kies je bijnaam & clan</h2>
+  <div class="small muted">Je bijnaam wordt opgeslagen en kan later alleen door admin worden aangepast.</div>
+  <div style="height:8px"></div>
+  <input id="nickInput" type="text" placeholder="Je bijnaam" style="width:100%"/>
   <div style="height:10px"></div>
-  <input id="nickInput" type="text" placeholder="Je bijnaam" style="width:100%" maxlength="20"/>
-  <div style="height:15px"></div>
-  <div class="section-title">🏴 Kies een clan</div>
-  <div class="small">Join een bestaande clan of maak een nieuwe</div>
-  <div id="clanList" style="margin-top:10px;max-height:200px;overflow:auto"></div>
-  <div style="height:10px"></div>
+  <div class="section-title">Kies een clan</div>
+  <div class="small muted">Kies een bestaande clan of maak een nieuwe (clannamen zijn uniek, case-insensitive).</div>
+  <div id="clanList" style="margin-top:8px;max-height:200px;overflow:auto"></div>
+  <div style="height:8px"></div>
   <div class="flex-between">
-    <input id="newClanInput" type="text" placeholder="Nieuwe clan naam" style="flex:1" maxlength="15"/>
-    <button id="createClanBtn">Maak Clan</button>
+    <input id="newClanInput" type="text" placeholder="Nieuwe clan naam" style="width:60%"/>
+    <button id="createClanBtn">Maak clan</button>
   </div>
-  <div style="text-align:right;margin-top:15px"><button id="firstDoneBtn" class="success-btn">Start Spelen →</button></div>
+  <div style="text-align:right;margin-top:14px"><button id="firstDoneBtn" class="success-btn">Klaar</button></div>
 </div>
 
 <!-- Admin Panel -->
 <div id="adminPanel">
-  <div style="font-weight:700;margin-bottom:10px;color:var(--accent);display:flex;align-items:center;">
-    ⚡ Admin Panel
-    <span class="admin-badge">u_yqrok</span>
+  <div style="font-weight:700;margin-bottom:8px;color:var(--accent);">Admin (u_yqrok)</div>
+
+  <div class="section-title">Speler beheer</div>
+  <div style="margin-bottom:8px">
+    <label class="small">Selecteer speler</label>
+    <select id="adminPlayerSelect" style="width:100%"></select>
   </div>
 
-  <div class="section-title">👥 Speler Beheer</div>
-  <div style="margin-bottom:10px">
-    <select id="adminPlayerSelect" style="width:100%">
-      <option value="">Selecteer speler...</option>
-    </select>
+  <div style="margin-bottom:8px">
+    <label class="small">Naam (admin kan wijzigen)</label>
+    <input id="adminChangeName" type="text" class="small" />
   </div>
 
-  <div style="display:flex;gap:8px;margin-bottom:10px">
+  <div style="display:flex;gap:6px;margin-bottom:8px">
     <div style="flex:1">
-      <label class="small">Grootte</label>
-      <input id="adminChangeSize" type="number" min="16" max="128" value="32" class="small" />
+      <label class="small">Grootte</label><br/>
+      <input id="adminChangeSize" type="number" min="16" max="128" class="small" />
     </div>
     <div style="flex:1">
-      <label class="small">Snelheid</label>
-      <input id="adminChangeSpeed" type="number" min="1" max="20" value="4" step="0.5" class="small" />
+      <label class="small">Snelheid</label><br/>
+      <input id="adminChangeSpeed" type="number" min="1" max="30" class="small" />
     </div>
   </div>
 
-  <div style="margin-bottom:10px">
-    <label class="small">Kleur</label>
-    <input id="adminChangeColor" type="color" value="#ff4444" style="width:100%" />
+  <div style="margin-bottom:8px">
+    <label class="small">Kleur</label><br/>
+    <input id="adminChangeColor" type="color" />
   </div>
 
-  <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px">
-    <label class="small"><input id="adminTrack" type="checkbox"/> Volg speler</label>
+  <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px">
+    <label class="small"><input id="adminTrack" type="checkbox"/> Track speler</label>
     <button id="adminApplyBtn" style="flex:1">Toepassen</button>
   </div>
 
-  <div style="display:flex;gap:8px;margin-bottom:10px">
-    <button id="adminKickBtn" style="flex:1;background:#7a1f1f">🚫 Kick</button>
-    <button id="adminTeleportBtn" style="flex:1">🔮 Teleport</button>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <button id="adminKickBtn" style="flex:1;background:#5a1f1f">Kick</button>
+    <button id="adminTeleportBtn" style="flex:1">Teleporteer</button>
   </div>
 
   <div class="danger-zone">
-    <div class="small" style="color:var(--danger);">⚠️ Gevaarlijke Zone</div>
-    <div style="display:flex;gap:8px;margin-top:10px">
-      <input id="resetConfirm" placeholder='typ "RESET"' style="flex:1" class="small"/>
-      <button id="resetBtn" class="danger-btn">💥 Reset DB</button>
+    <div class="small muted" style="color:var(--danger);">Gevaarlijke zone</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+      <input id="resetConfirm" placeholder='typ "RESET" om te bevestigen' style="flex:1"/>
+      <button id="resetBtn" class="danger-btn">Reset DB</button>
     </div>
   </div>
 </div>
 
-<!-- Clan Panel -->
+<!-- Player Settings Panel -->
+<div id="playerSettings">
+  <div style="font-weight:700;margin-bottom:8px;color:var(--accent);">Speler Instellingen</div>
+  
+  <div class="player-settings-row">
+    <label class="small">Grootte</label>
+    <input id="playerChangeSize" type="number" min="16" max="128" class="small" style="flex:1" />
+  </div>
+  
+  <div class="player-settings-row">
+    <label class="small">Snelheid</label>
+    <input id="playerChangeSpeed" type="number" min="1" max="30" step="0.5" class="small" style="flex:1" />
+  </div>
+  
+  <div class="player-settings-row">
+    <label class="small">Kleur</label>
+    <input id="playerChangeColor" type="color" style="flex:1" />
+  </div>
+  
+  <div style="text-align:right;margin-top:8px">
+    <button id="playerApplyBtn">Toepassen</button>
+  </div>
+</div>
+
+<!-- Clan Panel (toggle with C) -->
 <div id="clanPanel" style="display:none">
-  <div style="font-weight:700;margin-bottom:10px;color:var(--accent);">🏴 Clans</div>
-  <div id="clanPanelList" style="max-height:50vh;overflow:auto"></div>
-  <div style="height:10px"></div>
+  <div style="font-weight:700;margin-bottom:8px;color:var(--accent);">Clans</div>
+  <div id="clanPanelList" style="max-height:40vh;overflow:auto"></div>
+  <div style="height:8px"></div>
   <div style="text-align:right"><button id="clanCloseBtn">Sluiten</button></div>
 </div>
 
@@ -189,14 +206,23 @@ let camX = 0, camY = 0;
 
 const adminId = 'u_yqrok';
 
-// Eenvoudige texture system - gebruik kleuren als fallback
+const tex = {};
+['floor','wall','wood','grass','player','carpet','blood'].forEach(k=>{
+  tex[k] = new Image();
+  tex[k].src = k + '.png';
+  // Fallback voor ontbrekende textures
+  tex[k].onerror = function() {
+    console.warn('Texture niet gevonden: ' + k + '.png');
+  };
+});
+
 const BLOCKS = [
-  {id: 'floor', name: 'Vloer', color: '#4a4a4a', solid: false},
-  {id: 'wood',  name: 'Hout',  color: '#8B4513', solid: false},
-  {id: 'wall',  name: 'Muur',  color: '#666666', solid: true},
-  {id: 'grass', name: 'Gras',  color: '#2E8B57', solid: false},
-  {id: 'carpet', name: 'Tapijt', color: '#8B4513', solid: false},
-  {id: 'blood', name: 'Bloed', color: '#8B0000', solid: false}
+  {id: 'floor', name: 'Vloer', tex: 'floor', solid: false, placeOn: []},
+  {id: 'wood',  name: 'Hout',  tex: 'wood',  solid: false, placeOn: ['floor', 'grass']},
+  {id: 'wall',  name: 'Muur',  tex: 'wall',  solid: true, placeOn: ['floor', 'grass']},
+  {id: 'grass', name: 'Grass', tex: 'grass', solid: false, placeOn: []},
+  {id: 'carpet', name: 'Tapijt', tex: 'carpet', solid: false, placeOn: ['floor']},
+  {id: 'blood', name: 'Bloed', tex: 'blood', solid: false, placeOn: ['floor', 'grass']}
 ];
 
 /* UI refs */
@@ -204,13 +230,11 @@ const playerLabel = document.getElementById('playerLabel');
 const clanLabel = document.getElementById('clanLabel');
 const coordsLabel = document.getElementById('coords');
 const onlineLabel = document.getElementById('online');
-const selectedInfo = document.getElementById('selectedInfo');
 const tooltip = document.getElementById('tooltip');
 const notification = document.getElementById('notification');
 const selectedBlockName = document.getElementById('selectedBlockName');
 const blocksPlaced = document.getElementById('blocksPlaced');
-const blockIndicator = document.getElementById('blockIndicator');
-const currentBlock = document.getElementById('currentBlock');
+const settingsToggle = document.getElementById('settingsToggle');
 
 const invModal = document.getElementById('inventoryModal');
 const invSlots = document.getElementById('inventorySlots');
@@ -225,6 +249,7 @@ const firstDoneBtn = document.getElementById('firstDoneBtn');
 
 const adminPanel = document.getElementById('adminPanel');
 const adminPlayerSelect = document.getElementById('adminPlayerSelect');
+const adminChangeName = document.getElementById('adminChangeName');
 const adminChangeSize = document.getElementById('adminChangeSize');
 const adminChangeSpeed = document.getElementById('adminChangeSpeed');
 const adminChangeColor = document.getElementById('adminChangeColor');
@@ -234,6 +259,12 @@ const adminKickBtn = document.getElementById('adminKickBtn');
 const adminTeleportBtn = document.getElementById('adminTeleportBtn');
 const resetConfirm = document.getElementById('resetConfirm');
 const resetBtn = document.getElementById('resetBtn');
+
+const playerSettings = document.getElementById('playerSettings');
+const playerChangeSize = document.getElementById('playerChangeSize');
+const playerChangeSpeed = document.getElementById('playerChangeSpeed');
+const playerChangeColor = document.getElementById('playerChangeColor');
+const playerApplyBtn = document.getElementById('playerApplyBtn');
 
 const clanPanel = document.getElementById('clanPanel');
 const clanPanelList = document.getElementById('clanPanelList');
@@ -245,12 +276,12 @@ window.addEventListener('keydown', e=>{ keys[e.key] = true; });
 window.addEventListener('keyup', e=>{ keys[e.key] = false; });
 
 let local = { id: null, nickname: null, clan: null };
-let player = null;
-let players = {};
-let mapTiles = {};
-let clans = {};
+let player = null;     // local player's runtime object
+let players = {};      // firebase snapshot
+let mapTiles = {};     // firebase snapshot (map keyed by "x,y")
+let clans = {};        // firebase snapshot
 
-let selectedBlock = null;
+let selectedBlock = null; // nothing in-hand by default
 let blocksPlacedCount = 0;
 
 /* ================= Firebase listeners ================= */
@@ -259,13 +290,12 @@ db.ref('players').on('value', snap=>{
   onlineLabel.innerText = 'Online: ' + Object.keys(players).length;
   rebuildAdminPlayerList();
 });
-
 db.ref('map').on('value', snap=>{
   mapTiles = snap.val() || {};
+  // Update blocks placed count
   blocksPlacedCount = Object.keys(mapTiles).length;
   if(blocksPlaced) blocksPlaced.innerText = blocksPlacedCount;
 });
-
 db.ref('clans').on('value', snap=>{
   clans = snap.val() || {};
   updateClanPanelList();
@@ -292,135 +322,54 @@ function buildInventoryUI(){
   BLOCKS.forEach(b=>{
     const s = document.createElement('div');
     s.className = 'slot';
-    s.style.backgroundColor = b.color;
-    s.title = b.name + (b.solid ? ' (SOLIDE)' : '');
-    
-    // Maak een eenvoudige textuur met canvas
-    const textureCanvas = document.createElement('canvas');
-    textureCanvas.width = 64;
-    textureCanvas.height = 64;
-    const texCtx = textureCanvas.getContext('2d');
-    
-    // Basis kleur
-    texCtx.fillStyle = b.color;
-    texCtx.fillRect(0, 0, 64, 64);
-    
-    // Textuur effect
-    if(b.id === 'wood') {
-      texCtx.fillStyle = '#A0522D';
-      for(let i = 0; i < 8; i++) {
-        texCtx.fillRect(i * 8, 0, 4, 64);
-      }
-    } else if(b.id === 'wall') {
-      texCtx.fillStyle = '#555';
-      for(let x = 0; x < 8; x++) {
-        for(let y = 0; y < 8; y++) {
-          if((x + y) % 2 === 0) {
-            texCtx.fillRect(x * 8, y * 8, 4, 4);
-          }
-        }
-      }
-    } else if(b.id === 'grass') {
-      texCtx.fillStyle = '#3CB371';
-      for(let i = 0; i < 20; i++) {
-        const x = Math.random() * 64;
-        const y = Math.random() * 64;
-        texCtx.fillRect(x, y, 2, 8);
-      }
-    } else if(b.id === 'carpet') {
-      texCtx.fillStyle = '#A0522D';
-      texCtx.fillRect(0, 0, 64, 64);
-      texCtx.fillStyle = '#8B4513';
-      for(let i = 0; i < 4; i++) {
-        texCtx.fillRect(i * 16, 0, 8, 64);
-      }
-    } else if(b.id === 'blood') {
-      texCtx.fillStyle = '#8B0000';
-      texCtx.fillRect(0, 0, 64, 64);
-      texCtx.fillStyle = '#660000';
-      // Maak bloedvlekken
-      for(let i = 0; i < 5; i++) {
-        const x = 10 + Math.random() * 44;
-        const y = 10 + Math.random() * 44;
-        const r = 5 + Math.random() * 10;
-        texCtx.beginPath();
-        texCtx.arc(x, y, r, 0, Math.PI * 2);
-        texCtx.fill();
-      }
-    }
-    
-    s.style.backgroundImage = `url(${textureCanvas.toDataURL()})`;
-    
+    s.style.backgroundImage = `url(${b.tex}.png)`;
+    s.title = b.name + (b.placeOn.length > 0 ? `\nPlaatsbaar op: ${b.placeOn.join(', ')}` : '');
     s.onclick = ()=>{
       if(selectedBlock && selectedBlock.id === b.id){
         selectedBlock = null;
         s.classList.remove('selected');
         selectedBlockName.innerText = '-';
-        hide(blockIndicator);
-        hide(selectedInfo);
       } else {
         selectedBlock = b;
         invSlots.querySelectorAll('.slot').forEach(x => x.classList.remove('selected'));
         s.classList.add('selected');
         selectedBlockName.innerText = b.name;
-        currentBlock.innerText = b.name;
-        show(blockIndicator);
-        show(selectedInfo);
-        selectedInfo.innerText = `Geselecteerd: ${b.name}`;
       }
     };
-    
     const label = document.createElement('div');
-    label.style.fontSize='11px'; label.style.color='white'; label.style.textShadow='0 1px 2px black';
-    label.style.background='rgba(0,0,0,0.7)'; label.style.padding='2px 4px'; label.style.borderRadius='3px';
+    label.style.fontSize='12px'; label.style.color='white'; label.style.textShadow='0 1px 2px black';
     label.innerText = b.name;
     s.appendChild(label);
     invSlots.appendChild(s);
   });
 }
+invClose.addEventListener('click', ()=>{ hide(invModal); });
 
-invClose.addEventListener('click', ()=>{ 
-  hide(invModal); 
-  if(selectedBlock) {
-    show(blockIndicator);
-  }
-});
-
-/* ================= First-time setup ================= */
+/* ================= First-time nickname & clan ================= */
 function isFirstTime(){ return !localStorage.getItem('nickname'); }
 
 function buildFirstModalClanList(){
   clanListEl.innerHTML = '';
   const keys = Object.keys(clans || {});
   if(keys.length === 0){
-    const p = document.createElement('div'); 
-    p.className='small muted'; 
-    p.innerText = 'Nog geen clans. Maak de eerste!';
-    p.style.padding='10px';
-    p.style.textAlign='center';
+    const p = document.createElement('div'); p.className='small muted'; p.innerText = 'Nog geen clans. Maak de eerste!';
     clanListEl.appendChild(p);
     return;
   }
-  
   keys.sort((a,b)=>a.localeCompare(b, undefined, {sensitivity:'base'}));
   keys.forEach(name=>{
     const box = document.createElement('div');
     box.className = 'clan-item';
-    const t = document.createElement('div'); 
-    t.style.fontWeight='700'; 
-    t.innerText = name;
-    const c = document.createElement('div'); 
-    c.className='muted small'; 
-    c.innerText = 'Leden: ' + (clans[name].members ? Object.keys(clans[name].members).length : 0);
-    const btn = document.createElement('button'); 
-    btn.style.marginTop='8px'; 
-    btn.innerText='Join Clan';
+    const t = document.createElement('div'); t.style.fontWeight='700'; t.innerText = name;
+    const c = document.createElement('div'); c.className='muted small'; c.innerText = 'Leden: ' + (clans[name].members ? Object.keys(clans[name].members).length : 0);
+    const btn = document.createElement('button'); btn.style.marginTop='6px'; btn.innerText='Join';
     btn.onclick = ()=> {
-      joinClan(name);
+      // join
+      if(!local.id) alert('Wacht even, speler niet klaar'); // shouldn't happen
+      else joinClan(name);
+      showNotification('Je zult de clan joinen zodra je klaar bent.');
     };
-    box.appendChild(t); 
-    box.appendChild(c); 
-    box.appendChild(btn);
+    box.appendChild(t); box.appendChild(c); box.appendChild(btn);
     clanListEl.appendChild(box);
   });
 }
@@ -428,79 +377,69 @@ function buildFirstModalClanList(){
 createClanBtn.addEventListener('click', async ()=>{
   const name = newClanInput.value.trim();
   if(!name) return showNotification('Voer een clan naam in', 2000);
-  
+  // check duplicates case-insensitive
   const existing = Object.keys(clans || {}).find(c => c.toLowerCase() === name.toLowerCase());
-  if(existing) return showNotification('Clan bestaat al!', 3000);
-  
+  if(existing) return showNotification('Die clan bestaat al (case-insensitive). Kies een andere naam.', 3000);
+  // create
   if(!local.id){
+    // store choice locally for after player creation
     local.clan = name;
     localStorage.setItem('clan', name);
-    showNotification('Clan wordt aangemaakt!');
+    showNotification('Clan wordt aangemaakt zodra je klaar bent.');
     return;
   }
-  
-  await db.ref('clans/' + name + '/members/' + local.id).set({ 
-    name: local.nickname || 'Speler', 
-    joinedAt: Date.now() 
-  });
-  
+  await db.ref('clans/' + name + '/members/' + local.id).set({ name: local.nickname || 'Speler', joinedAt: Date.now() });
   local.clan = name;
   localStorage.setItem('clan', name);
-  if(player){ 
-    player.clan = name; 
-    db.ref('players/' + local.id + '/clan').set(name); 
-  }
-  
-  showNotification('Clan aangemaakt! Je bent nu lid.');
+  if(player){ player.clan = name; db.ref('players/' + local.id + '/clan').set(name); }
+  showNotification('Clan aangemaakt en je bent lid.');
   buildFirstModalClanList();
-  newClanInput.value = '';
 });
 
 firstDoneBtn.addEventListener('click', ()=>{
   const nick = nickInput.value.trim();
-  if(!nick) return showNotification('Voer een bijnaam in!', 3000);
-  
+  if(!nick) return showNotification('Voer een bijnaam in (je kunt deze later niet zelf veranderen).', 3000);
   local.nickname = nick;
   localStorage.setItem('nickname', nick);
-  
+  // if local.clan is set (via create earlier) ensure it's stored
   if(local.clan) localStorage.setItem('clan', local.clan);
-  
   hide(firstModal);
   startOrUpdatePlayer();
 });
 
-/* ================= Player Management ================= */
+/* ================= Player init and update ================= */
 async function startOrUpdatePlayer(){
-  if(localStorage.getItem('playerId')) {
-    local.id = localStorage.getItem('playerId');
-  } else { 
-    local.id = 'u_' + Math.random().toString(36).substr(2,6); 
-    localStorage.setItem('playerId', local.id); 
-  }
+  // id
+  if(localStorage.getItem('playerId')) local.id = localStorage.getItem('playerId');
+  else { local.id = 'u_' + Math.random().toString(36).substr(2,6); localStorage.setItem('playerId', local.id); }
 
   if(!local.nickname) local.nickname = localStorage.getItem('nickname') || ('Speler' + Math.floor(Math.random()*9999));
   if(!local.clan) local.clan = localStorage.getItem('clan') || null;
 
   player = {
-    px: 200, py: 200, x: 6, y: 6,
+    px: 0, py: 0, x: 0, y: 0,
     speed: 4, w: 32, h: 32,
     color: '#ff4444',
     name: local.nickname,
     clan: local.clan || null
   };
 
+  // write to firebase & ensure remove on disconnect
   await db.ref('players/' + local.id).set(player);
   db.ref('players/' + local.id).onDisconnect().remove();
 
-  if(local.clan) {
-    db.ref('clans/' + local.clan + '/members/' + local.id).set({ 
-      name: local.nickname, 
-      joinedAt: Date.now() 
-    });
-  }
+  // if clan set, ensure member registered
+  if(local.clan) db.ref('clans/' + local.clan + '/members/' + local.id).set({ name: local.nickname, joinedAt: Date.now() });
 
+  // show labels
   updateLabels();
-  showNotification(`Welkom ${local.nickname}!`, 2000);
+  showNotification('Welkom ' + local.nickname + '!', 2000);
+  
+  // Update player settings form
+  if(playerChangeSize) playerChangeSize.value = player.w;
+  if(playerChangeSpeed) playerChangeSpeed.value = player.speed;
+  if(playerChangeColor) playerChangeColor.value = player.color;
+  
   requestAnimationFrame(mainLoop);
 }
 
@@ -509,7 +448,7 @@ function updateLabels(){
   clanLabel.innerText = 'Clan: ' + (player.clan || '-');
 }
 
-/* ================= Building System ================= */
+/* ================= Placement rules ================= */
 function tileOccupiedByPlayer(tx,ty){
   for(const id in players){
     const p = players[id];
@@ -527,77 +466,85 @@ function tileOccupiedByPlayer(tx,ty){
 }
 
 function screenToTile(mx,my){
+  // camX,camY defined as: camX = W/2 - player.px; so worldX = mx - camX
   const worldX = mx - camX;
   const worldY = my - camY;
-  return { 
-    tx: Math.floor(worldX / tileSize), 
-    ty: Math.floor(worldY / tileSize) 
-  };
+  return { tx: Math.floor(worldX / tileSize), ty: Math.floor(worldY / tileSize) };
 }
 
-/* Place block on left click */
+/* place block on click (left) if inventory selected */
 canvas.addEventListener('click', (ev)=>{
   if(!player || !selectedBlock) return;
-  
   const rect = canvas.getBoundingClientRect();
   const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
   const {tx,ty} = screenToTile(mx,my);
   const key = worldKey(tx,ty);
   
+  // Check if there's already a block
   if(mapTiles[key]) { 
-    showNotification('Er staat al een blok hier!', 1500); 
+    showNotification('Er staat al een blok op die plek.', 1500); 
     return; 
+  }
+  
+  // Check if block can be placed on this tile type
+  const baseTileKey = worldKey(tx, ty);
+  const baseTile = mapTiles[baseTileKey];
+  
+  // If there's no base tile, it's grass
+  const baseType = baseTile ? baseTile.type : 'grass';
+  
+  // Check if selected block can be placed on this base type
+  if(selectedBlock.placeOn.length > 0 && !selectedBlock.placeOn.includes(baseType)) {
+    showNotification(`Kan ${selectedBlock.name} niet plaatsen op ${baseType}.`, 2000);
+    return;
   }
   
   if(tileOccupiedByPlayer(tx,ty)) { 
-    showNotification('Speler staat hier!', 1500); 
+    showNotification('Kan hier geen blok zetten: speler aanwezig.', 1500); 
     return; 
   }
   
+  // place
   db.ref('map/' + key).set({ type: selectedBlock.id });
-  showNotification(`${selectedBlock.name} geplaatst!`, 1500);
+  showNotification(selectedBlock.name + ' geplaatst op ' + tx + ',' + ty, 1500);
 });
 
-/* Remove block on right-click */
+/* remove block on right-click or shift+click */
 canvas.addEventListener('contextmenu', (ev)=>{
   ev.preventDefault();
   if(!player) return;
-  
   const rect = canvas.getBoundingClientRect();
   const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
   const {tx,ty} = screenToTile(mx,my);
   const key = worldKey(tx,ty);
-  
   if(mapTiles[key]) {
     db.ref('map/' + key).remove();
-    showNotification('Blok verwijderd!', 1500);
+    showNotification('Blok verwijderd van ' + tx + ',' + ty, 1500);
   }
 });
-
-/* Remove block with shift+click */
 canvas.addEventListener('click', (ev)=>{
-  if(ev.shiftKey){ 
+  if(ev.shiftKey && selectedBlock === null){ // shift+click with empty hand deletes
     const rect = canvas.getBoundingClientRect();
     const mx = ev.clientX - rect.left, my = ev.clientY - rect.top;
     const {tx,ty} = screenToTile(mx,my);
     const key = worldKey(tx,ty);
-    
     if(mapTiles[key]) {
       db.ref('map/' + key).remove();
-      showNotification('Blok verwijderd!', 1500);
+      showNotification('Blok verwijderd van ' + tx + ',' + ty, 1500);
     }
   }
 });
 
-/* ================= Collision Detection ================= */
+/* ================= Collision logic ================= */
 function isSolidAt(tx,ty){
   const key = worldKey(tx,ty);
   const tile = mapTiles[key];
   if(!tile) return false;
   const b = BLOCKS.find(bb => bb.id === tile.type);
-  return b ? b.solid : false;
+  return b ? !!b.solid : false;
 }
 
+/* check full AABB corners */
 function collidesAt(px,py){
   const corners = [
     {x: px, y: py},
@@ -605,7 +552,6 @@ function collidesAt(px,py){
     {x: px, y: py + player.h - 1},
     {x: px + player.w - 1, y: py + player.h - 1}
   ];
-  
   for(const c of corners){
     const tx = Math.floor(c.x / tileSize);
     const ty = Math.floor(c.y / tileSize);
@@ -614,360 +560,403 @@ function collidesAt(px,py){
   return false;
 }
 
-/* ================= Admin System ================= */
+/* ================= Admin UI actions ================= */
 function rebuildAdminPlayerList(){
-  adminPlayerSelect.innerHTML = '<option value="">Selecteer speler...</option>';
+  // populate adminPlayerSelect
+  const cur = adminPlayerSelect.value;
+  adminPlayerSelect.innerHTML = '';
   const ids = Object.keys(players).sort();
-  
   ids.forEach(id=>{
     const opt = document.createElement('option');
     opt.value = id;
-    const p = players[id];
-    const label = p && p.name ? p.name : id;
-    opt.text = (id === local.id ? '[JIJ] ' : '') + label;
+    const label = players[id] && players[id].name ? players[id].name : id;
+    opt.text = (id === local.id ? '[YOU] ' : '') + label + ' (' + id + ')';
     adminPlayerSelect.appendChild(opt);
   });
+  if(cur) adminPlayerSelect.value = cur;
 }
 
 adminApplyBtn.addEventListener('click', async ()=>{
-  if(local.id !== adminId) return showNotification('Alleen admin!', 2000);
-  
+  if(local.id !== adminId) return showNotification('Alleen admin kan dit doen.', 2000);
   const sel = adminPlayerSelect.value;
-  if(!sel) return showNotification('Selecteer een speler!', 2000);
-  
-  const newSize = parseInt(adminChangeSize.value) || players[sel].w;
-  const newSpeed = parseFloat(adminChangeSpeed.value) || players[sel].speed;
-  const newColor = adminChangeColor.value || players[sel].color;
-  
-  await db.ref('players/' + sel).update({ 
-    w: newSize, 
-    h: newSize, 
-    speed: newSpeed, 
-    color: newColor 
-  });
-  
-  showNotification('Speler aangepast!', 2000);
+  if(!sel) return showNotification('Selecteer een speler.', 2000);
+  const newName = adminChangeName.value.trim();
+  const newSize = parseInt(adminChangeSize.value) || undefined;
+  const newSpeed = parseFloat(adminChangeSpeed.value) || undefined;
+  const newColor = adminChangeColor.value || undefined;
+  const update = {};
+  if(newName) update.name = newName;
+  if(newSize) { update.w = newSize; update.h = newSize; }
+  if(newSpeed) update.speed = newSpeed;
+  if(newColor) update.color = newColor;
+  if(Object.keys(update).length === 0) return showNotification('Niets om te veranderen.', 2000);
+  await db.ref('players/' + sel).update(update);
+  showNotification('Speler bijgewerkt.', 2000);
 });
 
 adminKickBtn.addEventListener('click', async ()=>{
-  if(local.id !== adminId) return showNotification('Alleen admin!', 2000);
-  
+  if(local.id !== adminId) return showNotification('Alleen admin kan dit doen.', 2000);
   const sel = adminPlayerSelect.value;
-  if(!sel) return showNotification('Selecteer een speler!', 2000);
+  if(!sel) return showNotification('Selecteer speler', 2000);
+  if(!confirm('Kick speler ' + sel + ' ?')) return;
   
-  if(!confirm(`Weet je zeker dat je ${sel} wilt kicken?`)) return;
-  
+  // Remove from Firebase
   await db.ref('players/' + sel).remove();
   
+  // If kicking yourself, reload the page
   if(sel === local.id) {
-    showNotification('Je bent gekicked! Pagina herladen...', 2000);
-    setTimeout(() => location.reload(), 2000);
+    showNotification('Je bent gekicked. Pagina wordt herladen...', 2000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   } else {
-    showNotification('Speler gekicked!', 2000);
+    showNotification('Speler verwijderd uit DB (gekicked).', 2000);
   }
 });
 
 adminTeleportBtn.addEventListener('click', async ()=>{
-  if(local.id !== adminId) return showNotification('Alleen admin!', 2000);
-  
+  if(local.id !== adminId) return showNotification('Alleen admin kan dit doen.', 2000);
   const sel = adminPlayerSelect.value;
-  if(!sel) return showNotification('Selecteer een speler!', 2000);
-  
+  if(!sel) return showNotification('Selecteer speler', 2000);
   const p = players[sel];
-  if(!p) return showNotification('Speler niet gevonden!', 2000);
-  
-  player.px = p.px || 0;
-  player.py = p.py || 0;
-  
-  await db.ref('players/' + local.id).update({ 
-    px: player.px, 
-    py: player.py 
-  });
-  
-  showNotification(`Geteleporteerd naar ${sel}!`, 2000);
+  if(!p) return showNotification('Speler data niet gevonden.', 2000);
+  // teleport admin to that player's position
+  player.px = p.px || p.x * tileSize || 0;
+  player.py = p.py || p.y * tileSize || 0;
+  await db.ref('players/' + local.id).update({ px: player.px, py: player.py });
+  showNotification('Geteleporteerd naar ' + sel, 2000);
 });
 
 resetBtn.addEventListener('click', async ()=>{
-  if(local.id !== adminId) return showNotification('Alleen admin!', 2000);
-  
+  if(local.id !== adminId) return showNotification('Alleen admin kan DB resetten.', 2000);
   const code = resetConfirm.value.trim();
-  if(code !== 'RESET') return showNotification('Typ "RESET" om te bevestigen!', 2000);
-  
-  if(!confirm('WEET JE HET ZEKER? Alles wordt verwijderd!')) return;
-  
+  if(code !== 'RESET') return showNotification('Type EXACT "RESET" in het veld om te bevestigen.', 2000);
+  if(!confirm('Weet je zeker? Dit verwijdert players, map en clans in de database.')) return;
   try{
     await db.ref('players').remove();
     await db.ref('map').remove();
     await db.ref('clans').remove();
-    
     resetConfirm.value = '';
-    showNotification('Database gereset!', 3000);
-    
+    showNotification('Database nodes verwijderd (players, map, clans).', 3000);
+    // re-create local player entry
     if(player) await db.ref('players/' + local.id).set(player);
   }catch(err){
-    showNotification('Error: ' + err.message, 3000);
+    showNotification('Reset failed: ' + err.message, 3000);
   }
 });
 
-/* ================= Clan System ================= */
+/* ================= Player Settings ================= */
+settingsToggle.addEventListener('click', () => {
+  if(playerSettings.style.display === 'block') {
+    hide(playerSettings);
+  } else {
+    // Update form with current values
+    playerChangeSize.value = player.w;
+    playerChangeSpeed.value = player.speed;
+    playerChangeColor.value = player.color;
+    show(playerSettings);
+  }
+});
+
+playerApplyBtn.addEventListener('click', async () => {
+  if(!player) return;
+  
+  const newSize = parseInt(playerChangeSize.value) || player.w;
+  const newSpeed = parseFloat(playerChangeSpeed.value) || player.speed;
+  const newColor = playerChangeColor.value || player.color;
+  
+  // Apply changes locally
+  player.w = newSize;
+  player.h = newSize;
+  player.speed = newSpeed;
+  player.color = newColor;
+  
+  // Update in Firebase
+  await db.ref('players/' + local.id).update({ 
+    w: player.w, 
+    h: player.h, 
+    speed: player.speed, 
+    color: player.color 
+  });
+  
+  showNotification('Speler instellingen bijgewerkt!', 2000);
+});
+
+/* ================= Clan Panel UI ================= */
 function updateClanPanelList(){
   clanPanelList.innerHTML = '';
   const names = Object.keys(clans || {});
-  
+  names.sort((a,b)=>a.localeCompare(b, undefined, {sensitivity:'base'}));
   if(names.length === 0){
-    const p = document.createElement('div'); 
-    p.className='small'; 
-    p.innerText = 'Nog geen clans.';
-    p.style.padding='10px';
-    p.style.textAlign='center';
+    const p = document.createElement('div'); p.className='small'; p.innerText = 'Nog geen clans.';
     clanPanelList.appendChild(p);
     return;
   }
-  
-  names.sort((a,b)=>a.localeCompare(b, undefined, {sensitivity:'base'}));
-  
   names.forEach(name=>{
-    const el = document.createElement('div'); 
-    el.className = 'clan-item';
-    
-    const title = document.createElement('div'); 
-    title.style.fontWeight='700'; 
-    title.innerText = name;
-    
+    const el = document.createElement('div'); el.className = 'clan-item';
+    const title = document.createElement('div'); title.style.fontWeight='700'; title.innerText = name;
     const members = clans[name].members ? Object.keys(clans[name].members) : [];
-    const memCount = document.createElement('div'); 
-    memCount.className='small muted'; 
-    memCount.innerText = members.length + ' leden';
-    
-    const btnJoin = document.createElement('button'); 
-    btnJoin.style.marginTop='8px'; 
-    btnJoin.innerText='Join Clan';
-    
+    const memCount = document.createElement('div'); memCount.className='small muted'; memCount.innerText = 'Leden: ' + members.length;
+    const btnJoin = document.createElement('button'); btnJoin.style.marginTop='6px'; btnJoin.innerText='Join';
     btnJoin.onclick = async ()=> {
-      if(!local.id) return showNotification('Wacht even...', 2000);
-      
-      await db.ref('clans/' + name + '/members/' + local.id).set({ 
-        name: local.nickname || player.name, 
-        joinedAt: Date.now() 
-      });
-      
-      local.clan = name; 
-      localStorage.setItem('clan', name);
-      
-      if(player) { 
-        player.clan = name; 
-        db.ref('players/' + local.id + '/clan').set(name); 
-      }
-      
-      showNotification(`Je bent lid van ${name}!`, 2000);
+      if(!local.id) return showNotification('Wacht even tot je bent aangemaakt.', 2000);
+      // add to clan
+      await db.ref('clans/' + name + '/members/' + local.id).set({ name: local.nickname || player.name, joinedAt: Date.now() });
+      local.clan = name; localStorage.setItem('clan', name);
+      if(player) { player.clan = name; db.ref('players/' + local.id + '/clan').set(name); }
+      showNotification('Joined clan ' + name, 2000);
       updateLabels();
       updateClanPanelList();
     };
-    
-    el.appendChild(title); 
-    el.appendChild(memCount); 
-    el.appendChild(btnJoin);
+    el.appendChild(title); el.appendChild(memCount); el.appendChild(btnJoin);
     clanPanelList.appendChild(el);
   });
 }
-
 clanCloseBtn.addEventListener('click', ()=> hide(clanPanel));
 
-/* ================= Controls ================= */
+/* ================= Controls: open inventory/clan/admin ================= */
 window.addEventListener('keydown', (e)=>{
   if(e.key === 'e' || e.key === 'E'){
-    e.preventDefault();
-    if(invModal.style.display === 'block') {
-      hide(invModal);
-      if(selectedBlock) show(blockIndicator);
-    } else { 
-      buildInventoryUI(); 
-      show(invModal); 
-      hide(blockIndicator);
-    }
-  } 
-  else if(e.key === 'c' || e.key === 'C'){
-    e.preventDefault();
-    if(clanPanel.style.display === 'block') hide(clanPanel); 
-    else { updateClanPanelList(); show(clanPanel); }
-  }
-  else if(e.key === 'Tab'){
-    e.preventDefault();
-    if(local.id === adminId) {
-      adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
-    }
-  }
-  else if(e.key === 'Escape') {
     if(invModal.style.display === 'block') hide(invModal);
-    if(clanPanel.style.display === 'block') hide(clanPanel);
-    if(adminPanel.style.display === 'block') hide(adminPanel);
-    if(selectedBlock) show(blockIndicator);
+    else { buildInventoryUI(); show(invModal); }
+  } else if(e.key === 'c' || e.key === 'C'){
+    if(clanPanel.style.display === 'block') hide(clanPanel); else { updateClanPanelList(); show(clanPanel); }
+  } else if(e.key === 'Tab'){
+    e.preventDefault();
+    if(local.id === adminId) adminPanel.style.display = adminPanel.style.display === 'block' ? 'none' : 'block';
+    else clanPanel.style.display = clanPanel.style.display === 'block' ? 'none' : 'block';
+  } else if(e.key === 'p' || e.key === 'P') {
+    // Toggle player settings panel
+    if(playerSettings.style.display === 'block') {
+      hide(playerSettings);
+    } else {
+      playerChangeSize.value = player.w;
+      playerChangeSpeed.value = player.speed;
+      playerChangeColor.value = player.color;
+      show(playerSettings);
+    }
   }
 });
 
-/* ================= Main Game Loop ================= */
+/* ================= Movement & main loop ================= */
 function mainLoop(){
   if(!player) { requestAnimationFrame(mainLoop); return; }
-  
+  // intended movement
   let vx = 0, vy = 0;
   const sp = player.speed;
-  
   if(keys['ArrowUp'] || keys['w']) vy -= sp;
   if(keys['ArrowDown'] || keys['s']) vy += sp;
   if(keys['ArrowLeft'] || keys['a']) vx -= sp;
   if(keys['ArrowRight'] || keys['d']) vx += sp;
-  
+
+  // per-axis try move to prevent corner gliding
   const intendedX = player.px + vx;
   const intendedY = player.py + vy;
-  
+
+  // try X
   if(!collidesAt(intendedX, player.py)) player.px = intendedX;
+  // try Y
   if(!collidesAt(player.px, intendedY)) player.py = intendedY;
-  
+
+  // update grid coords as center tile
   player.x = Math.floor((player.px + player.w/2) / tileSize);
   player.y = Math.floor((player.py + player.h/2) / tileSize);
-  
-  db.ref('players/' + local.id).update({ 
-    px: player.px, 
-    py: player.py, 
-    x: player.x, 
-    y: player.y 
-  });
-  
+
+  // write lightweight update
+  db.ref('players/' + local.id).update({ px: player.px, py: player.py, x: player.x, y: player.y, name: player.name, clan: player.clan, color: player.color, w: player.w, h: player.h });
+
+  // camera
   camX = W/2 - player.px;
   camY = H/2 - player.py;
-  
+
+  // clear
   ctx.fillStyle = '#1b2a2b';
   ctx.fillRect(0,0,W,H);
-  
-  const startTx = Math.floor((-camX) / tileSize) - 2;
-  const endTx = Math.floor((W - camX) / tileSize) + 2;
-  const startTy = Math.floor((-camY) / tileSize) - 2;
-  const endTy = Math.floor((H - camY) / tileSize) + 2;
-  
+
+  // draw visible tile range
+  const startTx = Math.floor((-camX) / tileSize) - 1;
+  const endTx = Math.floor((W - camX) / tileSize) + 1;
+  const startTy = Math.floor((-camY) / tileSize) - 1;
+  const endTy = Math.floor((H - camY) / tileSize) + 1;
+
   for(let tx = startTx; tx <= endTx; tx++){
     for(let ty = startTy; ty <= endTy; ty++){
       const key = worldKey(tx,ty);
       const tile = mapTiles[key];
-      
       if(tile){
         const b = BLOCKS.find(bb => bb.id === tile.type);
-        if(b) {
-          ctx.fillStyle = b.color;
+        const img = tex[b.tex];
+        if(img && img.complete) ctx.drawImage(img, tx*tileSize + camX, ty*tileSize + camY, tileSize, tileSize);
+        else {
+          // Fallback colors for missing textures
+          ctx.fillStyle = b.id === 'carpet' ? '#8B4513' : 
+                         b.id === 'blood' ? '#8B0000' : 
+                         b.solid ? '#555' : '#3a3';
           ctx.fillRect(tx*tileSize + camX, ty*tileSize + camY, tileSize, tileSize);
-          
-          // Textuur effecten
-          if(b.id === 'wood') {
-            ctx.fillStyle = '#A0522D';
-            for(let i = 0; i < 4; i++) {
-              ctx.fillRect(tx*tileSize + camX + i * 8, ty*tileSize + camY, 4, tileSize);
-            }
-          } else if(b.id === 'wall') {
-            ctx.fillStyle = '#555';
-            for(let x = 0; x < 4; x++) {
-              for(let y = 0; y < 4; y++) {
-                if((x + y) % 2 === 0) {
-                  ctx.fillRect(tx*tileSize + camX + x * 8, ty*tileSize + camY + y * 8, 4, 4);
-                }
-              }
-            }
-          } else if(b.id === 'grass') {
-            ctx.fillStyle = '#3CB371';
-            for(let i = 0; i < 8; i++) {
-              const x = tx*tileSize + camX + Math.random() * tileSize;
-              const y = ty*tileSize + camY + Math.random() * tileSize;
-              ctx.fillRect(x, y, 1, 4);
-            }
-          }
         }
       } else {
-        ctx.fillStyle = '#2E8B57';
-        ctx.fillRect(tx*tileSize + camX, ty*tileSize + camY, tileSize, tileSize);
+        // background grass
+        const g = tex['grass'];
+        if(g && g.complete) ctx.drawImage(g, tx*tileSize + camX, ty*tileSize + camY, tileSize, tileSize);
+        else { ctx.fillStyle = '#234'; ctx.fillRect(tx*tileSize + camX, ty*tileSize + camY, tileSize, tileSize); }
       }
     }
   }
-  
+
+  // draw other players
   for(const id in players){
     const p = players[id];
     if(!p) continue;
-    
     const pw = p.w || 32, ph = p.h || 32;
+    const imgP = tex['player'];
     const drawX = (p.px || 0) + camX;
     const drawY = (p.py || 0) + camY;
-    
-    ctx.fillStyle = p.color || '#44a';
-    ctx.fillRect(drawX, drawY, pw, ph);
-    
+    if(imgP && imgP.complete) ctx.drawImage(imgP, drawX, drawY, pw, ph);
+    else { ctx.fillStyle = p.color || '#44a'; ctx.fillRect(drawX, drawY, pw, ph); }
     const displayName = (p.clan ? '[' + p.clan + '] ' : '') + (p.name || 'Speler');
-    ctx.fillStyle = 'white'; 
-    ctx.font = '12px sans-serif'; 
-    ctx.textAlign = 'center';
-    ctx.fillText(displayName, drawX + pw/2, drawY - 8);
-    
+    ctx.fillStyle = 'white'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(displayName, drawX + pw/2, drawY - 6);
+
+    // admin tracking lines
     if(local.id === adminId && adminTrack.checked && id !== local.id){
-      ctx.strokeStyle = 'yellow'; 
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
+      ctx.strokeStyle = 'yellow'; ctx.beginPath();
       ctx.moveTo(player.px + camX + player.w/2, player.py + camY + player.h/2);
-      ctx.lineTo(drawX + pw/2, drawY + ph/2); 
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.lineTo(drawX + pw/2, drawY + ph/2); ctx.stroke();
     }
   }
-  
-  ctx.fillStyle = player.color;
-  ctx.fillRect(player.px + camX, player.py + camY, player.w, player.h);
-  
-  ctx.fillStyle='white'; 
-  ctx.font='12px sans-serif'; 
-  ctx.textAlign='center';
-  ctx.fillText((player.clan ? '['+player.clan+'] ' : '') + player.name, 
-               player.px + camX + player.w/2, player.py + camY - 8);
-  
-  coordsLabel.innerText = `X:${player.x} Y:${player.y}`;
-  
+
+  // local player drawn on top
+  const lpImg = tex['player'];
+  if(lpImg && lpImg.complete) ctx.drawImage(lpImg, player.px + camX, player.py + camY, player.w, player.h);
+  else { ctx.fillStyle = player.color; ctx.fillRect(player.px + camX, player.py + camY, player.w, player.h); }
+  ctx.fillStyle='white'; ctx.font='12px sans-serif'; ctx.textAlign='center';
+  ctx.fillText((player.clan ? '['+player.clan+'] ' : '') + player.name, player.px + camX + player.w/2, player.py + camY - 6);
+
+  coordsLabel.innerText = 'X:' + player.x + ' Y:' + player.y;
+  playerLabel.innerText = 'Naam: ' + (player.clan ? '[' + player.clan + '] ' : '') + player.name;
+  clanLabel.innerText = 'Clan: ' + (player.clan || '-');
+
   requestAnimationFrame(mainLoop);
 }
 
-/* ================= Join Clan Function ================= */
-function joinClan(name){
-  local.clan = name; 
-  localStorage.setItem('clan', name);
-  
-  if(local.id){
-    db.ref('clans/' + name + '/members/' + local.id).set({ 
-      name: local.nickname || player.name, 
-      joinedAt: Date.now() 
-    });
-    
-    if(player){ 
-      player.clan = name; 
-      db.ref('players/' + local.id + '/clan').set(name); 
-    }
-    
-    showNotification(`Je bent lid van ${name}!`, 2000);
-    updateLabels();
-  } else {
-    showNotification('Clan wordt ingesteld...', 3000);
+/* check players colliding with tile */
+function isAnyPlayerOnTile(tx,ty){
+  for(const id in players){
+    const p = players[id];
+    if(!p) continue;
+    const cx = Math.floor(((p.px || 0) + (p.w || 32)/2) / tileSize);
+    const cy = Math.floor(((p.py || 0) + (p.h || 32)/2) / tileSize);
+    if(cx === tx && cy === ty) return true;
   }
+  if(player){
+    const cx = Math.floor((player.px + player.w/2) / tileSize);
+    const cy = Math.floor((player.py + player.h/2) / tileSize);
+    if(cx === tx && cy === ty) return true;
+  }
+  return false;
 }
 
 /* ================= Startup ================= */
 function init(){
+  // build inventory (nothing selected by default)
   buildInventoryUI();
   selectedBlock = null;
-  
+
+  // if first time, show first modal
   if(isFirstTime()){
     show(firstModal);
-    nickInput.focus();
+    db.ref('clans').once('value').then(snap => { clans = snap.val() || {}; buildFirstModalClanList(); });
   } else {
+    // load local settings
     local.nickname = localStorage.getItem('nickname');
     local.clan = localStorage.getItem('clan') || null;
     startOrUpdatePlayer();
   }
-  
-  showNotification('Gebruik E voor inventory, C voor clans, Tab voor admin', 5000);
 }
 
+/* when player finishes first modal? */
+async function startOrUpdatePlayer(){
+  // ensure id
+  if(localStorage.getItem('playerId')) local.id = localStorage.getItem('playerId');
+  else { local.id = 'u_' + Math.random().toString(36).substr(2,6); localStorage.setItem('playerId', local.id); }
+  // nickname & clan from localStorage
+  if(local.nickname === null || typeof local.nickname === 'undefined') local.nickname = localStorage.getItem('nickname');
+  if(!local.nickname) local.nickname = nickInput.value.trim() || 'Speler' + Math.floor(Math.random()*9999);
+  localStorage.setItem('nickname', local.nickname);
+  if(!local.clan) local.clan = localStorage.getItem('clan') || null;
+
+  player = {
+    px: 0, py: 0, x: 0, y: 0,
+    speed: 4, w: 32, h: 32,
+    color: '#ff4444',
+    name: local.nickname,
+    clan: local.clan || null
+  };
+
+  // push to firebase
+  await db.ref('players/' + local.id).set(player);
+  db.ref('players/' + local.id).onDisconnect().remove();
+
+  // if clan selected, add to clan members
+  if(local.clan) await db.ref('clans/' + local.clan + '/members/' + local.id).set({ name: local.nickname, joinedAt: Date.now() });
+
+  updateLabels();
+  requestAnimationFrame(mainLoop);
+}
+
+/* Finish flow for first modal "Klaar" */
+firstDoneBtn.addEventListener('click', ()=>{
+  const nick = nickInput.value.trim();
+  if(!nick) return showNotification('Voer een bijnaam in.', 2000);
+  local.nickname = nick; localStorage.setItem('nickname', nick);
+  // if user typed clan name in newClanInput treat that as create
+  const newClan = newClanInput.value.trim();
+  if(newClan){
+    // check duplicate
+    const existing = Object.keys(clans || {}).find(c => c.toLowerCase() === newClan.toLowerCase());
+    if(existing) { showNotification('Die clan bestaat al. Kies een andere naam of join een bestaande clan.', 3000); return; }
+    // create and join
+    db.ref('clans/' + newClan + '/members/' + (local.id || 'temp')).set({ name: nick, joinedAt: Date.now() });
+    local.clan = newClan; localStorage.setItem('clan', newClan);
+  }
+  hide(firstModal);
+  startOrUpdatePlayer();
+});
+
+/* If user uses join button in first modal (join known clan) call joinClan */
+function joinClan(name){
+  // if local.id not yet created, store choice; it will be applied after startOrUpdatePlayer
+  local.clan = name; localStorage.setItem('clan', name);
+  if(local.id){
+    db.ref('clans/' + name + '/members/' + local.id).set({ name: local.nickname || player.name, joinedAt: Date.now() });
+    if(player){ player.clan = name; db.ref('players/' + local.id + '/clan').set(name); }
+    showNotification('Joined clan ' + name, 2000);
+    updateLabels();
+  } else {
+    showNotification('Je clan wordt ingesteld zodra je klaar bent (na het invoeren van je bijnaam).', 3000);
+  }
+}
+
+/* build first modal clan list helper (called when clans updated) */
+function buildFirstModalClanList(){
+  clanListEl.innerHTML = '';
+  const names = Object.keys(clans || {});
+  if(names.length === 0){
+    const p = document.createElement('div'); p.className='small muted'; p.innerText = 'Nog geen clans.';
+    clanListEl.appendChild(p); return;
+  }
+  names.sort((a,b)=>a.localeCompare(b, undefined, {sensitivity:'base'}));
+  names.forEach(name=>{
+    const el = document.createElement('div'); el.className='clan-item';
+    const t = document.createElement('div'); t.style.fontWeight='700'; t.innerText = name;
+    const m = document.createElement('div'); m.className='small muted'; m.innerText = 'Leden: ' + (clans[name].members ? Object.keys(clans[name].members).length : 0);
+    const btn = document.createElement('button'); btn.style.marginTop='6px'; btn.innerText='Join'; btn.onclick = ()=> joinClan(name);
+    el.appendChild(t); el.appendChild(m); el.appendChild(btn);
+    clanListEl.appendChild(el);
+  });
+}
+
+/* ================= Init ================= */
 init();
 
 </script>
